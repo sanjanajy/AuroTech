@@ -1,0 +1,32 @@
+!pip install qrcode[pil]
+
+import qrcode
+from PIL import Image
+import matplotlib.pyplot as plt
+
+# Data to be encoded
+data = "https://www.example.com"
+
+# Creating an instance of QRCode
+qr = qrcode.QRCode(
+    version=1,  # Controls the size of the QR Code
+    error_correction=qrcode.constants.ERROR_CORRECT_L,  # Controls the error correction used for the QR Code
+    box_size=10,  # Controls how many pixels each “box” of the QR code is
+    border=4,  # Controls how many boxes thick the border should be
+)
+
+# Adding data to the instance
+qr.add_data(data)
+qr.make(fit=True)
+
+# Creating an image
+img = qr.make_image(fill_color="black", back_color="white")
+
+# Saving the image
+img.save("qrcode.png")
+
+# Display the image
+img = Image.open("qrcode.png")
+plt.imshow(img)
+plt.axis("off")  # Hide the axis
+plt.show()
