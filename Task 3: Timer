@@ -1,0 +1,38 @@
+import time
+import os
+
+def countdown_timer(seconds):
+    try:
+        total_time = seconds
+        while seconds:
+            mins, secs = divmod(seconds, 60)
+            hours, mins = divmod(mins, 60)
+            timer = '{:02d}:{:02d}:{:02d}'.format(hours, mins, secs)
+            print(timer, end="\r")
+            time.sleep(1)
+            seconds -= 1
+
+            # Progress indicator
+            progress = (total_time - seconds) / total_time
+            bar_length = 20
+            block = int(round(bar_length * progress))
+            progress_bar = '#' * block + '-' * (bar_length - block)
+            print(f"{timer} [{progress_bar}] {int(progress * 100)}%", end="\r")
+
+        print("\nTime's up!")
+        
+        # Notification sound (cross-platform)
+        if os.name == 'nt':  # For Windows
+            os.system('echo \a')
+        else:
+            os.system('printf \a')
+
+    except KeyboardInterrupt:
+        print("\nTimer interrupted!")
+
+# User input for the timer duration in seconds
+try:
+    duration = int(input("Enter the time in seconds: "))
+    countdown_timer(duration)
+except ValueError:
+    print("Please enter a valid number.")
